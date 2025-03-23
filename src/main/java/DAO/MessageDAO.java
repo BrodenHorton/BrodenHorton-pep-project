@@ -17,7 +17,7 @@ public class MessageDAO {
     }
     
     public Message insertMessage(Message message) {
-        if(message.getMessage_text() == null || message.getMessage_text().length() <= 255) {
+        if(message.getMessage_text() == null || message.getMessage_text().length() == 0 || message.getMessage_text().length() > 255) {
             return null;
         }
         if(accountDAO.getAccountById(message.getPosted_by()) == null) {
