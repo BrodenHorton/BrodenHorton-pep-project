@@ -9,11 +9,39 @@ import java.sql.Statement;
 import Model.Message;
 import Util.ConnectionUtil;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class MessageDAO {
     private AccountDAO accountDAO;
 
     public MessageDAO() {
         accountDAO = new AccountDAO();
+    }
+
+    public List<Message> getAllMessages() {
+        List<Message> messages = new ArrayList<>();
+        Connection conn = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "SELECT * FROM message";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Message message = new Message();
+                message.setMessage_id(resultSet.getInt("message_id"));
+                message.setPosted_by(resultSet.getInt("posted_by"));
+                message.setMessage_text(resultSet.getString("message_text"));
+                message.setTime_posted_epoch(resultSet.getLong("time_posted_epoch"));
+                messages.add(message);
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return messages;
     }
     
     public Message insertMessage(Message message) {
