@@ -23,4 +23,8 @@ public class MessageService {
     public Message addMessage(Message message) {
         return messageDAO.insertMessage(message);
     }
+
+    public Message deleteMessage(int message_id) {
+        return messageDAO.deleteMessageById(message_id);
+    }
 }
