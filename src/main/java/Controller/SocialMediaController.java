@@ -118,20 +118,26 @@ public class SocialMediaController {
         }
     }
 
-    private void patchMessageTextByIdHandler(Context ctx) {
-        String message_text = ctx.body();
-        Message message;
+    private void patchMessageTextByIdHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        if(message == null || message.getMessage_text() == null) {
+            ctx.status(400);
+            return;
+        }
+
+        Message patchedMessage;
         try {
             int message_id = Integer.parseInt(ctx.pathParam("message_id"));
-            message = messageService.patchMessageTextById(message_id, message_text);
+            patchedMessage = messageService.patchMessageTextById(message_id, message.getMessage_text());
         }
         catch(NumberFormatException e) {
             System.out.println(e.getMessage());
-            message = null;
+            patchedMessage = null;
         }
 
-        if(message != null) {
-            ctx.json(message);
+        if(patchedMessage != null) {
+            ctx.json(patchedMessage);
         }
         else {
             ctx.status(400);
