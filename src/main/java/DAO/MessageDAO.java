@@ -71,7 +71,7 @@ public class MessageDAO {
     }
     
     public Message insertMessage(Message message) {
-        if(message.getMessage_text() == null || message.getMessage_text().length() == 0 || message.getMessage_text().length() > 255) {
+        if(message.getMessage_text() == null || message.getMessage_text().isEmpty() || message.getMessage_text().length() > 255) {
             return null;
         }
         if(accountDAO.getAccountById(message.getPosted_by()) == null) {
@@ -116,6 +116,37 @@ public class MessageDAO {
             preparedStatement.setInt(1, message_id);
 
             return message;
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public Message patchMessageTextById(int message_id, String message_text) {
+        Message message = getMessageById(message_id);
+        if(message == null) {
+            return null;
+        }
+        if(message_text == null || message_text.isEmpty() || message_text.length() > 255) {
+            return null;
+        }
+
+        Connection conn = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            preparedStatement.setString(1, message_text);
+            preparedStatement.setInt(2, message_id);
+
+            int recordsUpdated = preparedStatement.executeUpdate();
+            if(recordsUpdated > 0) {
+                message.setMessage_text(message_text);
+                return message;
+            }
         }
         catch(SQLException e) {
             System.out.println(e.getMessage());
