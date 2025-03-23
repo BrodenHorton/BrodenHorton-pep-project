@@ -38,6 +38,31 @@ public class AccountDAO {
         return accounts;
     }
 
+    public Account getAccountById(int account_id) {
+        Connection conn = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "SELECT * FROM account WHERE account_id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            preparedStatement.setInt(1, account_id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                Account account = new Account();
+                account.setAccount_id(resultSet.getInt("account_id"));
+                account.setUsername(resultSet.getString("username"));
+                account.setPassword(resultSet.getString("password"));
+                return account;
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
     public Account getAccountByUsername(String username) {
         Connection conn = ConnectionUtil.getConnection();
 
