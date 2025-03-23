@@ -70,7 +70,7 @@ public class MessageDAO {
         return null;
     }
 
-    public List<Message> getMessagesByPostBy(int posted_by) {
+    public List<Message> getMessagesByPostedBy(int posted_by) {
         List<Message> messages = new ArrayList<>();
         Connection conn = ConnectionUtil.getConnection();
 

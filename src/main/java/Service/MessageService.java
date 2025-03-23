@@ -21,7 +21,7 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByPostedBy(int posted_by) {
-        return messageDAO.getMessagesByPostBy(posted_by);
+        return messageDAO.getMessagesByPostedBy(posted_by);
     }
 
     public Message addMessage(Message message) {
