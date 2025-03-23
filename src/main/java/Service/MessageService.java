@@ -20,6 +20,10 @@ public class MessageService {
         return messageDAO.getMessageById(message_id);
     }
 
+    public List<Message> getMessagesByPostedBy(int posted_by) {
+        return messageDAO.getMessagesByPostBy(posted_by);
+    }
+
     public Message addMessage(Message message) {
         return messageDAO.insertMessage(message);
     }
