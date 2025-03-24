@@ -115,13 +115,6 @@ public class AccountDAO {
     }
 
     public Account insertAccount(Account account) {
-        if(account.getUsername() == null || account.getUsername().isEmpty() || getAccountByUsername(account.getUsername()) != null) {
-            return null;
-        }
-        if(account.getPassword().length() < 4) {
-            return null;
-        }
-
         Connection conn = ConnectionUtil.getConnection();
 
         try {

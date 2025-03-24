@@ -13,11 +13,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class MessageDAO {
-    private AccountDAO accountDAO;
-
-    public MessageDAO() {
-        accountDAO = new AccountDAO();
-    }
 
     public List<Message> getAllMessages() {
         List<Message> messages = new ArrayList<>();
@@ -98,13 +93,6 @@ public class MessageDAO {
     }
     
     public Message insertMessage(Message message) {
-        if(message.getMessage_text() == null || message.getMessage_text().isEmpty() || message.getMessage_text().length() > 255) {
-            return null;
-        }
-        if(accountDAO.getAccountById(message.getPosted_by()) == null) {
-            return null;
-        }
-
         Connection conn = ConnectionUtil.getConnection();
 
         try {
@@ -130,9 +118,6 @@ public class MessageDAO {
 
     public Message deleteMessageById(int message_id) {
         Message message = getMessageById(message_id);
-        if(message == null) {
-            return null;
-        }
 
         Connection conn = ConnectionUtil.getConnection();
 
@@ -153,12 +138,6 @@ public class MessageDAO {
 
     public Message patchMessageTextById(int message_id, String message_text) {
         Message message = getMessageById(message_id);
-        if(message == null) {
-            return null;
-        }
-        if(message_text == null || message_text.isEmpty() || message_text.length() > 255) {
-            return null;
-        }
 
         Connection conn = ConnectionUtil.getConnection();
 
